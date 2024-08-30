@@ -43,6 +43,7 @@ var getCmd = &cobra.Command{
 
 func init() {
 	getPriceCmd.Flags().StringVarP(&symbol, "symbol", "s", "", "The symbol of the stock")
+	getPriceCmd.MarkFlagRequired("symbol")
 	getCmd.AddCommand(getPriceCmd)
 	rootCmd.AddCommand(getCmd)
 }

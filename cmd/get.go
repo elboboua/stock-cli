@@ -37,9 +37,8 @@ var getPriceCmd = &cobra.Command{
 
 var getCmd = &cobra.Command{
 	Use:   "get",
-	Short: "Get a stock quote",
-	Long: `Get a stock quote from a stock service.
-	Currently, only Alpha Vantage is supported.`,
+	Short: "Get a variety of stock information",
+	Long:  `Get a variety of stock information from a stock service.`,
 }
 
 func init() {

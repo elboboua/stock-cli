@@ -22,16 +22,10 @@ var rootCmd = &cobra.Command{
 		ctx = context.WithValue(ctx, "stockService", stockService)
 		cmd.SetContext(ctx)
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello, World!")
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(getCmd)
 }
 
 func Execute() {
+	rootCmd.Root().CompletionOptions.DisableDefaultCmd = true
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

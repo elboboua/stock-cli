@@ -2,12 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 
-	"github.com/elboboua/stock-cli/pkg/config"
 	stockservice "github.com/elboboua/stock-cli/pkg/stock_service"
 	"github.com/spf13/cobra"
 )
-
 
 var symbol string
 var getPriceCmd = &cobra.Command{
@@ -16,20 +15,23 @@ var getPriceCmd = &cobra.Command{
 	Long: `Get the price of a stock from a stock service.
 	Currently, only Alpha Vantage is supported.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		config := config.LoadConfig()
 
 		if symbol == "" {
 			fmt.Println("Please provide a symbol")
 			return
 		}
-		
-		stockService := stockservice.NewStockService(config.StockApiKey)
-		res, err := stockService.GetQuoteBySymbol(symbol)
+		ss := cmd.Context().Value("stockService").(stockservice.StockService)
+		res, err := ss.GetQuoteBySymbol(symbol)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		fmt.Printf("The price of %s is %s\n", res.Symbol, res.Price)
+		priceF, err := strconv.ParseFloat(res.Price, 64)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("The price of %s is $%s\n", res.Symbol, strconv.FormatFloat(priceF, 'f', 2, 64))
 	},
 }
 
